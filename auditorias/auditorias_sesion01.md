@@ -31,12 +31,14 @@
 ```text
 Estoy trabajando en C99 compilado con GCC, sin usar
 bibliotecas que no sean de la biblioteca estándar.
+
 Rol: Actúa como un ingeniero de software de sistemas y compiladores.
 Especificación: Implementa una función que invierta un buffer de
 caracteres in-place usando aritmética de punteros (dos punteros, uno al
 inicio y otro al final). Debe correr en tiempo O(n) y usar memoria O(1),
 sin arreglos auxiliares. Debe manejar los casos NULL, longitud 0,
 longitud 1 y longitudes pares e impares sin acceder fuera de límites.
+
 Output: Entrégame únicamente código modular en C y un breve análisis de
 complejidad temporal y espacial. No incluyas explicaciones adicionales.
 ```
@@ -46,7 +48,24 @@ complejidad temporal y espacial. No incluyas explicaciones adicionales.
 
 ## 3. Código Devuelto por el Modelo
 ```c
-// Código devuelto por el LLM
+#include <stddef.h>
+
+void invertir_buffer(char *buf, size_t len)
+{
+    if (buf == NULL || len < 2) {
+        return;
+    }
+    char *izq = buf;
+    char *der = buf + (len - 1);
+    while (izq < der) {
+        char tmp = *izq;
+        *izq++ = *der;
+        *der-- = tmp;
+    }
+}
+
+/* Complejidad: tiempo O(n) (n/2 intercambios), espacio O(1). */
+
 ```
 
 ---
@@ -54,13 +73,28 @@ complejidad temporal y espacial. No incluyas explicaciones adicionales.
 ## 4. Fase 3: El Auditor (Resultados del Test Harness)
 *Pruebas ejecutadas:* Valores NULL, buffers vacios y longitudes impares
 
-* [ ] Caso base y límites superados sin *Crash*.
-* [ ] No existen accesos fuera de límites ni *Memory Leaks*.
-* [ ] La complejidad teórica coincide con la implementada.
+Compilación: `gcc -std=c99 -Wall -Wextra -fsanitize=address,undefined -g -o harness harness.c`
 
+Salida del harness:
+```text
+[PASS] longitud par                 resultado -> "dcba" (esperado "dcba")
+[PASS] longitud impar               resultado -> "edcba" (esperado "edcba")
+[PASS] longitud 1                   resultado -> "x" (esperado "x")
+[PASS] buffer vacio (len 0)         resultado -> "" (esperado "")
+[PASS] puntero NULL                 sin crash
+[PASS] doble inversion              resultado -> "hola" (esperado "hola")
+[PASS] con byte nulo intermedio     bytes: 64 63 00 62 61 
+
+Resultado: TODAS LAS PRUEBAS PASARON (0 fallos)
+
+* [x] Caso base y límites superados sin *Crash*.
+* [x] No existen accesos fuera de límites ni *Memory Leaks*.
+* [x] La complejidad teórica coincide con la implementada.
+
+```
 ### Reporte Crítico
 *¿Qué caso borde o problema omitió la IA y cómo lo solucionaste?*
-> 
+> Revisando la respuesta del modelo noté que el análisis de complejidad lo entregó sin mencionar el riesgo del tipo `size_t`: si la guarda inicial no existiera, con `len == 0` la expresión `len - 1` se desborda hacia abajo y `der` apuntaría muy lejos del buffer. Por eso verifiqué que la condición `len < 2` cubriera tanto el buffer vacío como el de un solo elemento antes de calcular `der`. Para comprobarlo armé un test harness con `assert` que prueba `NULL`, longitud 0, longitud 1, longitud par ("abcd"), longitud impar ("abcde") y la propiedad de que invertir dos veces regresa el buffer original. Lo compilé con `gcc -std=c99 -Wall -Wextra -fsanitize=address,undefined` y todas las pruebas pasaron sin reportes de AddressSanitizer ni UBSan.
 
 ---
-**Firma digital:** [Usuario de GitHub]
+**Firma digital:** elguachiloco69

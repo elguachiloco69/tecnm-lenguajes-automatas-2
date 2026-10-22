@@ -2,16 +2,18 @@
 **Materia:** Lenguajes y Autómatas II (SCD-1016)  
 **Tema:** Encuadre, Diagnóstico de Punteros y Metodología IA  
 **Docente Titular:** MCC. Iván Márquez Larios (`ijmarquezl`)  
-**Estudiante:** [Nombre Completo]  
-**Matrícula:** [No. de Control]  
-**Track:** [ C | Rust ]  
+**Estudiante:** Diego Reyes Martínez  
+**Matrícula:** No.24531376  
+**Track:** C
+
 
 ---
 
 ## 1. Fase 1: El Artesano (Dificultad Manual)
 *Reto:* Inversión de buffer in-place (char*)  
 *Describe qué problema o restricción de memoria/sintaxis identificaste al codificar a mano:*
-> 
+> Al programarlo a mano lo más complicado fue manejar bien los índices de los dos punteros. Con un buffer de longitud `len`, el último elemento válido está en `buf + len - 1` y no en `buf + len`; si se me pasa ese desfase leo o escribo un byte fuera del arreglo (error off-by-one) y en C no marca error de compilación, solo da comportamiento indefinido. También tuve que decidir la condición del ciclo: usar `izq < der` y no `izq != der`, porque en longitud par los punteros se cruzan sin encontrarse y el ciclo no terminaría. Otra restricción fue que, al ser in-place, no puedo usar un arreglo auxiliar, así que el intercambio se hace con una sola variable temporal para mantener O(1) de memoria. Por último, tuve que considerar que `len` es `size_t` (sin signo): si `len` es 0, la resta `len - 1` da la vuelta y se convierte en un número enorme, por lo que hay que validar antes de calcular el puntero final.
+
 
 ---
 

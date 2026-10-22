@@ -28,8 +28,18 @@
 | **Output (O)** | Solo código modular y análisis de complejidad |
 
 ### 2.2 Prompt Estructurado
-```text
-[Pega aquí el prompt formal que redactaste para la IA]
+``
+Contexto: Estoy trabajando en C99 compilado con GCC, sin usar
+bibliotecas que no sean de la biblioteca estándar.
+Rol: Actúa como un ingeniero de software de sistemas y compiladores.
+Especificación: Implementa una función que invierta un buffer de
+caracteres in-place usando aritmética de punteros (dos punteros, uno al
+inicio y otro al final). Debe correr en tiempo O(n) y usar memoria O(1),
+sin arreglos auxiliares. Debe manejar los casos NULL, longitud 0,
+longitud 1 y longitudes pares e impares sin acceder fuera de límites.
+Output: Entrégame únicamente código modular en C y un breve análisis de
+complejidad temporal y espacial. No incluyas explicaciones adicionales.
+
 ```
 
 ---

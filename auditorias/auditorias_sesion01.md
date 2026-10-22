@@ -28,8 +28,8 @@
 | **Output (O)** | Solo código modular y análisis de complejidad |
 
 ### 2.2 Prompt Estructurado
-``
-Contexto: Estoy trabajando en C99 compilado con GCC, sin usar
+```text
+Estoy trabajando en C99 compilado con GCC, sin usar
 bibliotecas que no sean de la biblioteca estándar.
 Rol: Actúa como un ingeniero de software de sistemas y compiladores.
 Especificación: Implementa una función que invierta un buffer de
@@ -39,10 +39,10 @@ sin arreglos auxiliares. Debe manejar los casos NULL, longitud 0,
 longitud 1 y longitudes pares e impares sin acceder fuera de límites.
 Output: Entrégame únicamente código modular en C y un breve análisis de
 complejidad temporal y espacial. No incluyas explicaciones adicionales.
-
 ```
 
 ---
+
 
 ## 3. Código Devuelto por el Modelo
 ```c
